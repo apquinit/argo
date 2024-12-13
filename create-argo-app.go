@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"fmt"
 	"os"
 	"os/exec"
@@ -10,6 +11,9 @@ import (
 	"github.com/urfave/cli/v2"
 	"gopkg.in/yaml.v2"
 )
+
+//go:embed templates/* dependencies.yaml
+var embeddedFiles embed.FS
 
 const version = "1.0.0"
 
@@ -114,10 +118,6 @@ func createNewProject(projectName string) error {
 
 	// Create files from templates
 	for target, tmplPath := range files {
-		if _, err := os.Stat(tmplPath); os.IsNotExist(err) {
-			return fmt.Errorf("template file %s does not exist", tmplPath)
-		}
-
 		targetPath := filepath.Join(projectName, target)
 		err := createFileFromTemplate(targetPath, tmplPath, projectName)
 		if err != nil {
@@ -125,9 +125,9 @@ func createNewProject(projectName string) error {
 		}
 	}
 
-	// Compile cli/argo.go into a binary and copy it to the project
-	if err := buildAndCopyBinary(projectName); err != nil {
-		return fmt.Errorf("error building and copying binary: %v", err)
+	// Copy the embedded CLI binary to the new project
+	if err := copyEmbeddedBinary(projectName); err != nil {
+		return fmt.Errorf("error copying embedded binary: %v", err)
 	}
 
 	// Initialize Go module
@@ -158,28 +158,26 @@ func createNewProject(projectName string) error {
 	return nil
 }
 
-func buildAndCopyBinary(projectName string) error {
-	// Build the binary from cli/argo.go
-	fmt.Println("Building argo binary...")
-	cmd := exec.Command("go", "build", "-o", "argo", "./cli/argo.go")
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	if err := cmd.Run(); err != nil {
-		return fmt.Errorf("error building binary: %v", err)
+func copyEmbeddedBinary(projectName string) error {
+	// Read the embedded binary
+	binaryData, err := embeddedFiles.ReadFile("argo/argo")
+	if err != nil {
+		return fmt.Errorf("error reading embedded binary: %v", err)
 	}
 
-	// Move the binary to the new project's directory
+	// Write the binary to the new project's directory
 	dest := filepath.Join(projectName, "argo")
 	fmt.Printf("Copying binary to %s\n", dest)
-	if err := os.Rename("argo", dest); err != nil {
-		return fmt.Errorf("error copying binary: %v", err)
+	err = os.WriteFile(dest, binaryData, 0755)
+	if err != nil {
+		return fmt.Errorf("error writing binary: %v", err)
 	}
 
 	return nil
 }
 
 func createFileFromTemplate(targetPath, tmplPath, projectName string) error {
-	tmpl, err := template.ParseFiles(tmplPath)
+	tmpl, err := template.ParseFS(embeddedFiles, tmplPath)
 	if err != nil {
 		return fmt.Errorf("error parsing template: %w", err)
 	}
@@ -204,7 +202,7 @@ func createFileFromTemplate(targetPath, tmplPath, projectName string) error {
 }
 
 func loadDependenciesYAML(filePath string) ([]string, error) {
-	data, err := os.ReadFile(filePath)
+	data, err := embeddedFiles.ReadFile(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("error reading YAML file: %v", err)
 	}
