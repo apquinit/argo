@@ -10,6 +10,7 @@ CREATE_ARGO_APP_SOURCE=create-argo-app/main.go
 build-argo-cli:
 	@echo "Building argo-cli binary..."
 	@go build -o $(ARGO_BINARY) $(ARGO_SOURCE)
+	@mv $(ARGO_BINARY) create-argo-app/
 
 # Embed the argo binary and build the create-argo-app binary
 build-create-argo-app: build-argo-cli
