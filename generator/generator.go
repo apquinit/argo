@@ -25,7 +25,6 @@ func CreateNewProject(projectName string) error {
 		"app/controllers",
 		"app/middleware",
 		"config",
-		"env",
 		"start",
 	}
 
@@ -33,8 +32,7 @@ func CreateNewProject(projectName string) error {
 		"app/controllers/health.go":       "../templates/app/controllers/health.go.tmpl",
 		"app/middleware/logger.go":        "../templates/app/middleware/logger.go.tmpl",
 		"config/app.go":                   "../templates/config/app.go.tmpl",
-		"config/cors.go":                  "../templates/config/cors.go.tmpl",
-		"env/env.go":                      "../templates/env/env.go.tmpl",
+		"start/env.go":                    "../templates/start/env.go.tmpl",
 		"start/kernel.go":                 "../templates/start/kernel.go.tmpl",
 		"start/routes.go":                 "../templates/start/routes.go.tmpl",
 		".env":                            "../templates/env.example.tmpl",

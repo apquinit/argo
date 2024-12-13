@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"{{.ProjectName}}/app/middleware"
-	"{{.ProjectName}}/config"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -12,12 +11,11 @@ import (
 
 // InitializeKernel sets up the Gin engine and starts the server
 func InitializeKernel() {
-	// Load application and CORS configurations
-	appConfig := config.LoadAppConfig()
-	corsConfig := config.LoadCORSConfig()
+	// Load application environment variables
+	env := LoadEnv()
 
 	// Set Gin mode
-	if appConfig.Mode == "release" {
+	if env.Mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	} else {
 		gin.SetMode(gin.DebugMode)
@@ -26,13 +24,13 @@ func InitializeKernel() {
 	// Initialize the Gin engine
 	engine := gin.Default()
 
-	// Setup CORS middleware
+	// Setup CORS
 	engine.Use(cors.New(cors.Config{
-		AllowOrigins:     corsConfig.AllowOrigins,
-		AllowMethods:     corsConfig.AllowMethods,
-		AllowHeaders:     corsConfig.AllowHeaders,
-		ExposeHeaders:    corsConfig.ExposeHeaders,
-		AllowCredentials: corsConfig.AllowCredentials,
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Content-Type", "Authorization"},
+		ExposeHeaders:    []string{},
+		AllowCredentials: true,
 	}))
 
 	// Register routes
@@ -40,6 +38,9 @@ func InitializeKernel() {
 
 	// Register global middleware
 	engine.Use(middleware.Logger())
+
+	// Register named middleware
+	// engine.Use(middleware.Auth())
 
 	// Start the server on the specified port
 	address := fmt.Sprintf(":%d", appConfig.Port)
