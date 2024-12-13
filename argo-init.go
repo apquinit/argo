@@ -125,6 +125,11 @@ func createNewProject(projectName string) error {
 		}
 	}
 
+	// Compile cmd/argo.go into a binary and copy it to the project
+	if err := buildAndCopyBinary(projectName); err != nil {
+		return fmt.Errorf("error building and copying binary: %v", err)
+	}
+
 	// Initialize Go module
 	fmt.Println("Initializing Go module...")
 	if err := runCommand("go", projectName, "mod", "init", projectName); err != nil {
@@ -138,7 +143,7 @@ func createNewProject(projectName string) error {
 	}
 
 	// Load dependencies from YAML
-	dependencies, err := loadDependenciesYAML("../dependencies.yaml")
+	dependencies, err := loadDependenciesYAML("dependencies.yaml")
 	if err != nil {
 		return fmt.Errorf("error loading dependencies: %v", err)
 	}
@@ -148,6 +153,26 @@ func createNewProject(projectName string) error {
 		if err := runCommand("go", projectName, "get", dep); err != nil {
 			return fmt.Errorf("error installing dependency %s: %v", dep, err)
 		}
+	}
+
+	return nil
+}
+
+func buildAndCopyBinary(projectName string) error {
+	// Build the binary from cmd/argo.go
+	fmt.Println("Building argo binary...")
+	cmd := exec.Command("go", "build", "-o", "argo", "./cmd/argo.go")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("error building binary: %v", err)
+	}
+
+	// Move the binary to the new project's directory
+	dest := filepath.Join(projectName, "argo")
+	fmt.Printf("Copying binary to %s\n", dest)
+	if err := os.Rename("argo", dest); err != nil {
+		return fmt.Errorf("error copying binary: %v", err)
 	}
 
 	return nil
