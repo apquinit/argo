@@ -4,17 +4,27 @@ import (
 	"log"
 	"time"
 
-	"{{.ProjectName}}/internal/context"
+	"github.com/gin-gonic/gin"
 )
 
-// LoggerMiddleware logs details of each request
-type LoggerMiddleware struct{}
-
-// Handle logs the request processing time
-func (lm *LoggerMiddleware) Handle(next func(ctx context.Context)) func(ctx context.Context) {
-	return func(ctx context.Context) {
+// Logger logs details of each request
+func Logger() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		start := time.Now()
-		next(ctx)
-		log.Printf("Request processed in %v", time.Since(start))
+
+		// Process the next handler in the middleware chain
+		c.Next()
+
+		// Calculate request processing time
+		duration := time.Since(start)
+
+		// Log request details
+		log.Printf("[%s] %s %s %d %s",
+			c.Request.Method,   // HTTP method (GET, POST, etc.)
+			c.Request.Host,     // Request host
+			c.Request.URL.Path, // Request path
+			c.Writer.Status(),  // Response status code
+			duration,           // Request processing time
+		)
 	}
 }

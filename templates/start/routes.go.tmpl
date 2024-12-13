@@ -2,7 +2,6 @@ package start
 
 import (
 	"{{.ProjectName}}/app/controllers"
-	"{{.ProjectName}}/internal/context"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,7 +12,5 @@ func RegisterRoutes(engine *gin.Engine) {
 	healthController := controllers.HealthController{}
 
 	// Health check endpoint
-	engine.GET("/", func(c *gin.Context) {
-		healthController.Handle(context.WrapGinContext(c))
-	})
+	engine.GET("/", healthController.Handle)
 }

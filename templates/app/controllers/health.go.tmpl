@@ -3,15 +3,15 @@ package controllers
 import (
 	"net/http"
 
-	"{{.ProjectName}}/internal/context"
+	"github.com/gin-gonic/gin"
 )
 
 // HealthController handles health-related endpoints
 type HealthController struct{}
 
 // Handle processes a health check request
-func (hc *HealthController) Handle(ctx context.Context) {
-	ctx.JSON(http.StatusOK, map[string]string{
+func (hc *HealthController) Handle(c *gin.Context) {
+	c.JSON(http.StatusOK, map[string]string{
 		"status": "ok",
 	})
 }

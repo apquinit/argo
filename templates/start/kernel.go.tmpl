@@ -4,6 +4,7 @@ import (
 	"{{.ProjectName}}/config"
 
 	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 // InitializeKernel sets up the Gin engine
@@ -24,11 +25,14 @@ func InitializeKernel() *gin.Engine {
 	// Setup CORS
 	SetupCORS(engine)
 
-	// Register middleware
-	RegisterMiddleware(engine)
-
 	// Register routes
 	RegisterRoutes(engine)
+
+	// Register global middleware
+	engine.Use(middleware.Logger())
+	engine.Use(middleware.CORS())
+
+	// Register custom middleware
 
 	return engine
 }
