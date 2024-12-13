@@ -1,24 +1,24 @@
 package config
 
-import (
-    "{{.ProjectName}}/start"
-)
+import "{{.ProjectName}}/env"
 
 // Config holds the application configuration
-type Config struct {
-    Mode string
-    Port int
+type AppConfig struct {
+	Mode string
+	Port int
 }
 
-// LoadConfig reads the environment variables and returns a Config struct
-func LoadConfig() (*Config, error) {
-    env, err := start.LoadEnv()
-    if err != nil {
-        return nil, err
-    }
+// LoadConfig reads from the `env` package and creates a Config struct
+func LoadConfig() (*AppConfig, error) {
+	// Load environment variables
+	envVars, err := env.LoadEnv()
+	if err != nil {
+		return nil, err
+	}
 
-    return &Config{
-        Mode: env.Mode,
-        Port: env.Port,
-    }, nil
+	// Create the configuration from environment variables
+	return &AppConfig{
+		Mode: envVars.Mode,
+		Port: envVars.Port,
+	}, nil
 }

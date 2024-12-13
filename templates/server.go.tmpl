@@ -7,11 +7,11 @@ import (
 )
 
 func main() {
-    // Initialize the Gin engine
-    engine := start.InitializeKernel()
+    // Initialize the server
+    server := start.InitializeKernel()
 
     // Start the server
-    if err := engine.Run(); err != nil {
+    if err := server.Run(); err != nil {
         log.Fatalf("Error starting server: %v", err)
     }
 }

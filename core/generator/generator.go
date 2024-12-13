@@ -23,6 +23,7 @@ func CreateNewProject(projectName string) error {
 	// Define directories and files to create
 	directories := []string{
 		"app/controllers",
+		"app/middleware",
 		"config",
 		"start",
 	}
@@ -38,7 +39,7 @@ func CreateNewProject(projectName string) error {
 		".env":                            "../templates/env.example.tmpl",
 		".env.example":                    "../templates/env.example.tmpl",
 		".gitignore":                      "../templates/gitignore.tmpl",
-		fmt.Sprintf("%s.go", projectName): "../templates/project.go.tmpl",
+		fmt.Sprintf("%s.go", projectName): "../templates/server.go.tmpl",
 	}
 
 	// Check if project directory already exists

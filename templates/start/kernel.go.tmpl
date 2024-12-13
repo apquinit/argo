@@ -12,29 +12,29 @@ import (
 // InitializeKernel sets up the Gin engine with middleware and routes
 func InitializeKernel() *gin.Engine {
 	// Load the application configuration
-  cfg, err := config.LoadConfig()
-  if err != nil {
-      log.Fatalf("Error loading configuration: %v", err)
-  }
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatalf("Error loading configuration: %v", err)
+	}
 
-	// Set Gin mode based on environment
+	// Set mode based on environment
 	if cfg.Mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	} else {
 		gin.SetMode(gin.DebugMode)
 	}
 
-	// Initialize the Gin engine
-	engine := gin.Default()
+	// Initialize the server
+	server := gin.Default()
 
 	// Register routes
-	RegisterRoutes(engine)
+	RegisterRoutes(server)
 
 	// Register global middleware (applied to all requests)
-	engine.Use(middleware.Logger())
-	engine.Use(middleware.CORS())
+	server.Use(middleware.Logger())
+	server.Use(middleware.CORS())
 
 	// Register named middleware (applied to specific groups of routes)
 
-	return engine
+	return server
 }
