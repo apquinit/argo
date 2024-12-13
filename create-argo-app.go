@@ -19,7 +19,7 @@ type Config struct {
 
 func main() {
 	app := &cli.App{
-		Name:    "argo-init",
+		Name:    "create-argo-app",
 		Usage:   "initialize and scaffold new projects for the Argo web framework",
 		Version: version,
 		Commands: []*cli.Command{
