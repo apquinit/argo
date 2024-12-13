@@ -160,7 +160,7 @@ func createNewProject(projectName string) error {
 
 func copyEmbeddedBinary(projectName string) error {
 	// Read the embedded binary
-	binaryData, err := embeddedFiles.ReadFile("build/argo")
+	binaryData, err := embeddedFiles.ReadFile("argo")
 	if err != nil {
 		return fmt.Errorf("error reading embedded binary: %v", err)
 	}
