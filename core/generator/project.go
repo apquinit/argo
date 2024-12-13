@@ -9,9 +9,9 @@ import (
 func CreateNewProject(projectName string) {
 	directories := []string{
 		"app/controllers",
-		"app/models",
-		"database/migrations",
-		"database/seeders",
+		// "app/models",
+		// "database/migrations",
+		// "database/seeders",
 		"public",
 		"routes",
 		"config",

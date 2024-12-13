@@ -8,7 +8,7 @@ import (
 )
 
 func GenerateController(name string) {
-	filename := filepath.Join("app/controllers", name+"_controller.go")
+	filename := filepath.Join("app/controllers", name+".go")
 
 	templateContent := `package controllers
 
