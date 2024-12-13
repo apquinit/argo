@@ -24,9 +24,9 @@ func CreateNewProject(projectName string) error {
 	directories := []string{
 		"app/controllers",
 		"app/middleware",
-		"core/context",
 		"config",
 		"env",
+		"internal/context",
 		"start",
 	}
 
@@ -35,10 +35,11 @@ func CreateNewProject(projectName string) error {
 		"app/middleware/logger.go":        "../templates/app/middleware/logger.go.tmpl",
 		"config/app.go":                   "../templates/config/app.go.tmpl",
 		"config/cors.go":                  "../templates/config/cors.go.tmpl",
-		"core/context/context.go":         "../templates/core/context/context.go.tmpl",
 		"env/env.go":                      "../templates/env/env.go.tmpl",
+		"internal/context/context.go":     "../templates/internal/context/context.go.tmpl",
 		"start/cors.go":                   "../templates/start/cors.go.tmpl",
 		"start/kernel.go":                 "../templates/start/kernel.go.tmpl",
+		"start/middleware.go":             "../templates/start/middleware.go.tmpl",
 		"start/routes.go":                 "../templates/start/routes.go.tmpl",
 		".env":                            "../templates/env.example.tmpl",
 		".env.example":                    "../templates/env.example.tmpl",

@@ -1,0 +1,19 @@
+package start
+
+import (
+	"{{.ProjectName}}/app/middleware"
+	"{{.ProjectName}}/internal/context"
+
+	"github.com/gin-gonic/gin"
+)
+
+// RegisterMiddleware sets up the application's middleware
+func RegisterMiddleware(engine *gin.Engine) {
+	// Example: Logger middleware
+	logger := middleware.LoggerMiddleware{}
+	engine.Use(func(c *gin.Context) {
+		logger.Handle(func(ctx context.Context) {})(context.WrapGinContext(c))
+	})
+
+	// Add other middleware here
+}

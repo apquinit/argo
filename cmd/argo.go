@@ -1,7 +1,7 @@
 package main
 
 import (
-	"argo/core/generator"
+	"argo/generator"
 	"fmt"
 	"os"
 

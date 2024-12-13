@@ -1,9 +1,7 @@
 package start
 
 import (
-	"{{.ProjectName}}/app/middleware"
 	"{{.ProjectName}}/config"
-	"{{.ProjectName}}/core/context"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,11 +24,8 @@ func InitializeKernel() *gin.Engine {
 	// Setup CORS
 	SetupCORS(engine)
 
-	// Load middleware
-	logger := middleware.LoggerMiddleware{}
-	engine.Use(func(c *gin.Context) {
-		logger.Handle(func(ctx context.Context) {})(context.WrapGinContext(c))
-	})
+	// Register middleware
+	RegisterMiddleware(engine)
 
 	// Register routes
 	RegisterRoutes(engine)
