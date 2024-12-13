@@ -11,9 +11,14 @@ type Config struct {
 }
 
 // LoadConfig reads the environment variables and returns a Config struct
-func LoadConfig(env *start.Env) *Config {
+func LoadConfig() (*Config, error) {
+    env, err := start.LoadEnv()
+    if err != nil {
+        return nil, err
+    }
+
     return &Config{
         Mode: env.Mode,
         Port: env.Port,
-    }
+    }, nil
 }

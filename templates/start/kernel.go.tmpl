@@ -3,19 +3,22 @@ package start
 import (
 	"log"
 
-	"myproject/app/middleware"
+	"{{.ProjectName}}/config"
+	"{{.ProjectName}}/app/middleware"
+
 	"github.com/gin-gonic/gin"
 )
 
 // InitializeKernel sets up the Gin engine with middleware and routes
 func InitializeKernel() *gin.Engine {
-	env, err := LoadEnv()
-	if err != nil {
-		log.Fatalf("Error loading environment variables: %v", err)
-	}
+	// Load the application configuration
+  cfg, err := config.LoadConfig()
+  if err != nil {
+      log.Fatalf("Error loading configuration: %v", err)
+  }
 
 	// Set Gin mode based on environment
-	if env.Mode == "release" {
+	if cfg.Mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	} else {
 		gin.SetMode(gin.DebugMode)
