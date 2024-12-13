@@ -33,9 +33,8 @@ This sets up a structured project with pre-configured folders and files.
 argo make:controller UserController
 ```
 
-3. Create a Migration:
+3. Run Database Migrations:
 ```bash
-argo make:migration users
 argo migration:run
 ```
 
