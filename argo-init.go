@@ -125,7 +125,7 @@ func createNewProject(projectName string) error {
 		}
 	}
 
-	// Compile cmd/argo.go into a binary and copy it to the project
+	// Compile cli/argo.go into a binary and copy it to the project
 	if err := buildAndCopyBinary(projectName); err != nil {
 		return fmt.Errorf("error building and copying binary: %v", err)
 	}
@@ -159,9 +159,9 @@ func createNewProject(projectName string) error {
 }
 
 func buildAndCopyBinary(projectName string) error {
-	// Build the binary from cmd/argo.go
+	// Build the binary from cli/argo.go
 	fmt.Println("Building argo binary...")
-	cmd := exec.Command("go", "build", "-o", "argo", "./cmd/argo.go")
+	cmd := exec.Command("go", "build", "-o", "argo", "./cli/argo.go")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {
