@@ -1,52 +1,37 @@
 package start
 
 import (
-    "log"
+	"log"
 
-    "github.com/gin-gonic/gin"
+	"myproject/app/middleware"
+	"github.com/gin-gonic/gin"
 )
 
 // InitializeKernel sets up the Gin engine with middleware and routes
 func InitializeKernel() *gin.Engine {
-    // Load environment variables
-    env, err := LoadEnv()
-    if err != nil {
-        log.Fatalf("Error loading environment variables: %v", err)
-    }
+	env, err := LoadEnv()
+	if err != nil {
+		log.Fatalf("Error loading environment variables: %v", err)
+	}
 
-    // Set Gin mode based on environment
-    if env.Mode == "release" {
-        gin.SetMode(gin.ReleaseMode)
-    } else {
-        gin.SetMode(gin.DebugMode)
-    }
+	// Set Gin mode based on environment
+	if env.Mode == "release" {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
+	}
 
-    engine := gin.Default()
+	// Initialize the Gin engine
+	engine := gin.Default()
 
-    // Register middleware
-    engine.Use(Logger())
-    engine.Use(CORS())
+	// Register routes
+	RegisterRoutes(engine)
 
-    // Register routes
-    RegisterRoutes(engine)
+	// Register global middleware (applied to all requests)
+	engine.Use(middleware.Logger())
+	engine.Use(middleware.CORS())
 
-    return engine
-}
+	// Register named middleware (applied to specific groups of routes)
 
-// Logger is a sample middleware for logging requests
-func Logger() gin.HandlerFunc {
-    return func(c *gin.Context) {
-        // Log request details
-        c.Next()
-    }
-}
-
-// CORS is a sample middleware for handling cross-origin requests
-func CORS() gin.HandlerFunc {
-    return func(c *gin.Context) {
-        c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-        c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
-        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-        c.Next()
-    }
+	return engine
 }
