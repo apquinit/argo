@@ -9,13 +9,13 @@ import (
 
 // SetupCORS configures CORS for the Gin engine
 func SetupCORS(engine *gin.Engine) {
-	corsConfig := config.LoadCORSConfig()
+	cfg := config.LoadCORSConfig()
 
 	engine.Use(cors.New(cors.Config{
-		AllowOrigins:     corsConfig.AllowOrigins,
-		AllowMethods:     corsConfig.AllowMethods,
-		AllowHeaders:     corsConfig.AllowHeaders,
-		ExposeHeaders:    corsConfig.ExposeHeaders,
-		AllowCredentials: corsConfig.AllowCredentials,
+		AllowOrigins:     cfg.AllowOrigins,
+		AllowMethods:     cfg.AllowMethods,
+		AllowHeaders:     cfg.AllowHeaders,
+		ExposeHeaders:    cfg.ExposeHeaders,
+		AllowCredentials: cfg.AllowCredentials,
 	}))
 }

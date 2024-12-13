@@ -11,7 +11,7 @@ import (
 // InitializeKernel sets up the Gin engine
 func InitializeKernel() *gin.Engine {
 	// Load configuration
-	cfg := config.LoadConfig()
+	cfg := config.LoadAppConfig()
 
 	// Set mode
 	if cfg.Mode == "release" {

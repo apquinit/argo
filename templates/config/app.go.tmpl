@@ -9,7 +9,7 @@ type AppConfig struct {
 }
 
 // LoadConfig reads from the `env` package and creates an AppConfig struct
-func LoadConfig() *AppConfig {
+func LoadAppConfig() *AppConfig {
 	// Load environment variables
 	envVars := env.LoadEnv()
 

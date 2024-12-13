@@ -32,11 +32,12 @@ func CreateNewProject(projectName string) error {
 
 	files := map[string]string{
 		"app/controllers/health.go":       "../templates/app/controllers/health.go.tmpl",
-		"app/middleware/cors.go":          "../templates/app/middleware/cors.go.tmpl",
 		"app/middleware/logger.go":        "../templates/app/middleware/logger.go.tmpl",
 		"config/app.go":                   "../templates/config/app.go.tmpl",
+		"config/cors.go":                  "../templates/config/cors.go.tmpl",
 		"core/context/context.go":         "../templates/core/context/context.go.tmpl",
 		"env/env.go":                      "../templates/env/env.go.tmpl",
+		"start/cors.go":                   "../templates/start/cors.go.tmpl",
 		"start/kernel.go":                 "../templates/start/kernel.go.tmpl",
 		"start/routes.go":                 "../templates/start/routes.go.tmpl",
 		".env":                            "../templates/env.example.tmpl",

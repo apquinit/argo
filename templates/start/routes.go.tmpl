@@ -13,7 +13,7 @@ func RegisterRoutes(engine *gin.Engine) {
 	healthController := controllers.HealthController{}
 
 	// Health check endpoint
-	engine.GET("/health", func(c *gin.Context) {
+	engine.GET("/", func(c *gin.Context) {
 		healthController.Handle(context.WrapGinContext(c))
 	})
 }
