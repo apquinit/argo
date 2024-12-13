@@ -19,8 +19,8 @@ type Config struct {
 
 func main() {
 	app := &cli.App{
-		Name:    "argo",
-		Usage:   "a powerful, opinionated web framework for Go",
+		Name:    "argo-init",
+		Usage:   "initialize and scaffold new projects for the Argo web framework",
 		Version: version,
 		Commands: []*cli.Command{
 			{
