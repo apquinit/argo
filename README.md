@@ -87,7 +87,7 @@ cd myproject
 ### Run the Application
 
 ```bash
-# Start the development server
+# Start the server
 ./argo serve
 ```
 
