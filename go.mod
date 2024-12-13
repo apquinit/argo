@@ -1,4 +1,4 @@
-module argo-init
+module create-argo-app
 
 go 1.22.3
 
