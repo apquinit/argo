@@ -15,7 +15,7 @@ build-argo-cli:
 # Embed the argo binary and build the create-argo-app binary
 build-create-argo-app: build-argo-cli
 	@echo "Embedding argo-cli binary and building create-argo-app..."
-	@cd create-argo-app && go build -o $(CREATE_ARGO_APP_BINARY) $(CREATE_ARGO_APP_SOURCE)
+	@cd create-argo-app && go build -o ./build/$(CREATE_ARGO_APP_BINARY) $(CREATE_ARGO_APP_SOURCE)
 
 # Clean up binaries
 clean:
