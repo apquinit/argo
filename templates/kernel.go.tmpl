@@ -18,15 +18,15 @@ func InitializeKernel() *gin.Engine {
 	return engine
 }
 
-// Logger is a sample middleware for logging
+// Logger is a sample middleware for logging requests
 func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		// Log request details here
+		// Log request details
 		c.Next()
 	}
 }
 
-// CORS is a sample middleware for handling CORS
+// CORS is a sample middleware for handling cross-origin requests
 func CORS() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
