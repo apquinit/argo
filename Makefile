@@ -9,18 +9,17 @@ CREATE_ARGO_APP_SOURCE=create-argo-app/main.go
 # Build the argo binary
 build-argo-cli:
 	@echo "Building argo-cli binary..."
-	@go build -o $(ARGO_BINARY) $(ARGO_SOURCE)
-	@mv $(ARGO_BINARY) create-argo-app/
+	@cd argo-cli && go build -o ../$(ARGO_BINARY) $(ARGO_SOURCE)
 
 # Embed the argo binary and build the create-argo-app binary
 build-create-argo-app: build-argo-cli
 	@echo "Embedding argo-cli binary and building create-argo-app..."
-	@go build -o $(CREATE_ARGO_APP_BINARY) $(CREATE_ARGO_APP_SOURCE)
+	@cd create-argo-app && go build -o ../$(CREATE_ARGO_APP_BINARY) $(CREATE_ARGO_APP_SOURCE)
 
 # Clean up binaries
 clean:
 	@echo "Cleaning up binaries..."
-	@rm -f $(CREATE_ARGO_APP_BINARY)
+	@rm -f $(CREATE_ARGO_APP_BINARY) $(ARGO_BINARY)
 
 # Default target
 all: build-create-argo-app
