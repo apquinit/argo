@@ -1,0 +1,19 @@
+package config
+
+import (
+    "{{.ProjectName}}/start"
+)
+
+// Config holds the application configuration
+type Config struct {
+    Mode string
+    Port int
+}
+
+// LoadConfig reads the environment variables and returns a Config struct
+func LoadConfig(env *start.Env) *Config {
+    return &Config{
+        Mode: env.Mode,
+        Port: env.Port,
+    }
+}

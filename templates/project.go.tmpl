@@ -1,31 +1,37 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"os"
+    "fmt"
+    "log"
 
-	"{{.ProjectName}}/start"
+    "github.com/gin-gonic/gin"
+    "{{.ProjectName}}/config"
+    "{{.ProjectName}}/start"
 )
 
 func main() {
-	// Load environment variables
-	if err := start.LoadEnv(); err != nil {
-		log.Fatalf("Error loading environment variables: %v", err)
-	}
+    // Load environment variables
+    env, err := start.LoadEnv()
+    if err != nil {
+        log.Fatalf("Error loading environment variables: %v", err)
+    }
 
-	// Initialize the Gin engine
-	engine := start.InitializeKernel()
+    // Load configuration
+    cfg := config.LoadConfig(env)
 
-	// Get the server port from the environment or default to 8080
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
+    // Set Gin mode based on configuration
+    if cfg.Mode == "production" {
+        gin.SetMode(gin.ReleaseMode)
+    } else {
+        gin.SetMode(gin.DebugMode)
+    }
 
-	// Start the server
-	fmt.Printf("Starting server on port %s...\n", port)
-	if err := engine.Run(":" + port); err != nil {
-		log.Fatalf("Server failed to start: %v", err)
-	}
+    // Initialize the Gin engine
+    engine := start.InitializeKernel()
+
+    // Start the server
+    fmt.Printf("Starting server on port %d...\n", cfg.Port)
+    if err := engine.Run(fmt.Sprintf(":%d", cfg.Port)); err != nil {
+        log.Fatalf("Server failed to start: %v", err)
+    }
 }

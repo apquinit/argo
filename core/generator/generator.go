@@ -23,15 +23,16 @@ func CreateNewProject(projectName string) error {
 	// Define directories and files to create
 	directories := []string{
 		"app/controllers",
-		"start",
 		"config",
+		"start",
 	}
 
 	files := map[string]string{
-		"app/controllers/health.go":       "../templates/controllers/health.go.tmpl",
-		"start/env.go":                    "../templates/env.go.tmpl",
-		"start/kernel.go":                 "../templates/kernel.go.tmpl",
-		"start/routes.go":                 "../templates/routes.go.tmpl",
+		"app/controllers/health.go":       "../templates/app/controllers/health.go.tmpl",
+		"config/app.go":                   "../templates/config/app.go.tmpl",
+		"start/env.go":                    "../templates/start/env.go.tmpl",
+		"start/kernel.go":                 "../templates/start/kernel.go.tmpl",
+		"start/routes.go":                 "../templates/start/routes.go.tmpl",
 		".env":                            "../templates/env.example.tmpl",
 		".env.example":                    "../templates/env.example.tmpl",
 		".gitignore":                      "../templates/gitignore.tmpl",
