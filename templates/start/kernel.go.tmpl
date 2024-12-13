@@ -1,8 +1,6 @@
 package start
 
 import (
-	"log"
-
 	"{{.ProjectName}}/config"
 	"{{.ProjectName}}/app/middleware"
 
@@ -12,10 +10,7 @@ import (
 // InitializeKernel sets up the Gin engine with middleware and routes
 func InitializeKernel() *gin.Engine {
 	// Load the application configuration
-	cfg, err := config.LoadConfig()
-	if err != nil {
-		log.Fatalf("error loading configuration: %v", err)
-	}
+	cfg := config.LoadConfig()
 
 	// Set mode based on environment
 	if cfg.Mode == "release" {

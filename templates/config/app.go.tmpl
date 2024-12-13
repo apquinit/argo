@@ -2,23 +2,20 @@ package config
 
 import "{{.ProjectName}}/env"
 
-// Config holds the application configuration
+// AppConfig holds the application configuration
 type AppConfig struct {
 	Mode string
 	Port int
 }
 
-// LoadConfig reads from the `env` package and creates a Config struct
-func LoadConfig() (*AppConfig, error) {
+// LoadConfig reads from the `env` package and creates an AppConfig struct
+func LoadConfig() *AppConfig {
 	// Load environment variables
-	envVars, err := env.LoadEnv()
-	if err != nil {
-		return nil, err
-	}
+	envVars := env.LoadEnv()
 
 	// Create the configuration from environment variables
 	return &AppConfig{
 		Mode: envVars.Mode,
 		Port: envVars.Port,
-	}, nil
+	}
 }
