@@ -1,4 +1,4 @@
-# Argo: The Powerful, Opinionated Web Framework for Go
+# Argo: A Powerful, Opinionated Web Framework for Go
 
 Argo is a modern, powerful, and opinionated web framework for Go, designed to streamline the development of scalable and maintainable server applications. Inspired by the principles of efficiency, organization, and developer happiness, Argo offers a suite of features and tools that make it easier for teams to deliver exceptional software with ease.
 

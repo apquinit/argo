@@ -3,9 +3,16 @@ package generator
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"text/template"
+
+	"gopkg.in/yaml.v2"
 )
+
+type Config struct {
+	Dependencies []string `yaml:"dependencies"`
+}
 
 func CreateNewProject(projectName string) error {
 	// Validate project name
@@ -66,6 +73,19 @@ func CreateNewProject(projectName string) error {
 		}
 	}
 
+	// Load dependencies from YAML
+	dependencies, err := loadDependenciesYAML("../dependencies.yaml")
+	if err != nil {
+		return fmt.Errorf("error loading dependencies: %v", err)
+	}
+
+	fmt.Println("Installing dependencies...")
+	for _, dep := range dependencies {
+		if err := runCommand("go", projectName, "get", dep); err != nil {
+			return fmt.Errorf("error installing dependency %s: %v", dep, err)
+		}
+	}
+
 	fmt.Printf("Project %s created successfully!\n", projectName)
 	return nil
 }
@@ -98,4 +118,33 @@ func createFileFromTemplate(targetPath, tmplPath, projectName string) error {
 	}
 
 	return nil
+}
+
+func loadDependenciesYAML(filePath string) ([]string, error) {
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		return nil, fmt.Errorf("error reading YAML file: %v", err)
+	}
+
+	var config Config
+	if err := yaml.Unmarshal(data, &config); err != nil {
+		return nil, fmt.Errorf("error parsing YAML file: %v", err)
+	}
+
+	return config.Dependencies, nil
+}
+
+func runCommand(command, dir string, args ...string) error {
+	// Create the command with arguments
+	cmd := exec.Command(command, args...)
+
+	// Set the working directory for the command
+	cmd.Dir = dir
+
+	// Redirect command output to the standard output and error streams
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	// Run the command
+	return cmd.Run()
 }
