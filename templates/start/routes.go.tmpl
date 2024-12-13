@@ -8,9 +8,9 @@ import (
 // RegisterRoutes sets up the application's routes
 func RegisterRoutes(engine *gin.Engine) {
 	// Define routes
-	routes := engine.Group("/")
+	rootRoutes := engine.Group("/")
 	{
-		routes.GET("/", controllers.Handle)
+		rootRoutes.GET("/", controllers.Handle)
 		// Add more routes here
 	}
 }

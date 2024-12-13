@@ -1,37 +1,52 @@
 package start
 
 import (
-	"github.com/gin-gonic/gin"
+    "log"
+
+    "github.com/gin-gonic/gin"
 )
 
 // InitializeKernel sets up the Gin engine with middleware and routes
 func InitializeKernel() *gin.Engine {
-	engine := gin.Default()
+    // Load environment variables
+    env, err := LoadEnv()
+    if err != nil {
+        log.Fatalf("Error loading environment variables: %v", err)
+    }
 
-	// Register middleware
-	engine.Use(Logger())
-	engine.Use(CORS())
+    // Set Gin mode based on environment
+    if env.Mode == "release" {
+        gin.SetMode(gin.ReleaseMode)
+    } else {
+        gin.SetMode(gin.DebugMode)
+    }
 
-	// Register routes
-	RegisterRoutes(engine)
+    engine := gin.Default()
 
-	return engine
+    // Register middleware
+    engine.Use(Logger())
+    engine.Use(CORS())
+
+    // Register routes
+    RegisterRoutes(engine)
+
+    return engine
 }
 
 // Logger is a sample middleware for logging requests
 func Logger() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		// Log request details
-		c.Next()
-	}
+    return func(c *gin.Context) {
+        // Log request details
+        c.Next()
+    }
 }
 
 // CORS is a sample middleware for handling cross-origin requests
 func CORS() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
-		c.Next()
-	}
+    return func(c *gin.Context) {
+        c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
+        c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+        c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        c.Next()
+    }
 }
