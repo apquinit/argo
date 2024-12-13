@@ -28,7 +28,7 @@ func CreateNewProject(projectName string) error {
 	}
 
 	files := map[string]string{
-		"app/controllers/health.go":       "../templates/app/controllers/health.go.tmpl",
+		"app/controllers/controller.go":   "../templates/app/controllers/controller.go.tmpl",
 		"config/app.go":                   "../templates/config/app.go.tmpl",
 		"start/env.go":                    "../templates/start/env.go.tmpl",
 		"start/kernel.go":                 "../templates/start/kernel.go.tmpl",
