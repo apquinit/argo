@@ -58,18 +58,11 @@ Argo provides utilities to simplify writing unit tests, integration tests, and e
 
 ## Getting Started
 
-### Install Argo
-
-```bash
-# Install the CLI tool
-go install github.com/ardata-tech/create-argo-app@latest
-```
-
 ### Create a New Project
 
 ```bash
 # Scaffold a new project
-create-argo-app new myproject
+./create-argo-app new myproject
 
 # Navigate to the project directory
 cd myproject
@@ -79,106 +72,23 @@ cd myproject
 
 ```bash
 # Generate a new controller
-argo make:controller user
+./argo make:controller user
 
 # Generate a new model
-argo make:model user
+./argo make:model user
 
 # Generate a new migration
-argo make:migration users
+./argo make:migration users
 
 # Generate a new seeder
-argo make:seeder user
+./argo make:seeder user
 ```
 
 ### Run the Application
 
 ```bash
 # Start the development server
-argo serve
-```
-
-## Example: User Management Module
-
-### Define a Model
-
-File: `models/user.go`
-
-```go
-package models
-
-type User struct {
-    ID        uint   `gorm:"primaryKey"`
-    Name      string `gorm:"size:255"`
-    Email     string `gorm:"unique;size:255"`
-    CreatedAt time.Time
-    UpdatedAt time.Time
-}
-```
-
-### Create a Migration
-
-File: `migrations/users.go`
-
-```go
-package migrations
-
-import "gorm.io/gorm"
-
-func Up(db *gorm.DB) error {
-    return db.AutoMigrate(&models.User{})
-}
-
-func Down(db *gorm.DB) error {
-    return db.Migrator().DropTable("users")
-}
-```
-
-### Implement a Controller
-
-File: `controllers/user.go`
-
-```go
-package controllers
-
-import (
-    "net/http"
-    "github.com/labstack/echo/v4"
-    "myproject/models"
-    "gorm.io/gorm"
-)
-
-func GetUsers(c echo.Context) error {
-    var users []models.User
-    if err := models.DB.Find(&users).Error; err != nil {
-        return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
-    }
-    return c.JSON(http.StatusOK, users)
-}
-```
-
-### Add a Route
-
-File: `routes/web.go`
-
-```go
-package routes
-
-import (
-    "github.com/labstack/echo/v4"
-    "myproject/controllers"
-)
-
-func RegisterRoutes(e *echo.Echo) {
-    e.GET("/users", controllers.GetUsers)
-}
-```
-
-### Run the Application
-
-```bash
-# Start the development server
-argo serve
+./argo serve
 ```
 
 ## Roadmap
