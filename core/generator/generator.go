@@ -32,6 +32,7 @@ func CreateNewProject(projectName string) error {
 		"start/env.go":              "../templates/env.go.tmpl",
 		"start/kernel.go":           "../templates/kernel.go.tmpl",
 		"start/routes.go":           "../templates/routes.go.tmpl",
+		".env":                      "../templates/env.example.tmpl",
 		".env.example":              "../templates/env.example.tmpl",
 		".gitignore":                "../templates/gitignore.tmpl",
 		"argo.go":                   "../templates/argo.go.tmpl",
