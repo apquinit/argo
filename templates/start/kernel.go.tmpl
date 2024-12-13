@@ -43,7 +43,7 @@ func InitializeKernel() {
 	// engine.Use(middleware.Auth())
 
 	// Start the server on the specified port
-	address := fmt.Sprintf(":%d", appConfig.Port)
+	address := fmt.Sprintf(":%d", env.Port)
 	if err := engine.Run(address); err != nil {
 		panic(fmt.Sprintf("failed to start server: %v", err))
 	}
