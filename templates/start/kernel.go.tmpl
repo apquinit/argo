@@ -19,17 +19,17 @@ func InitializeKernel() *gin.Engine {
 		gin.SetMode(gin.DebugMode)
 	}
 
-	// Initialize the server
-	server := gin.Default()
+	// Initialize the engine
+	engine := gin.Default()
 
 	// Register routes
-	RegisterRoutes(server)
+	RegisterRoutes(engine)
 
 	// Register global middleware (applied to all requests)
-	server.Use(middleware.Logger())
-	server.Use(middleware.CORS())
+	engine.Use(middleware.Logger())
+	engine.Use(middleware.CORS())
 
 	// Register named middleware (applied to specific groups of routes)
 
-	return server
+	return engine
 }
