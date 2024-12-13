@@ -1,0 +1,21 @@
+package start
+
+import (
+	"{{.ProjectName}}/config"
+
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+)
+
+// SetupCORS configures CORS for the Gin engine
+func SetupCORS(engine *gin.Engine) {
+	corsConfig := config.LoadCORSConfig()
+
+	engine.Use(cors.New(cors.Config{
+		AllowOrigins:     corsConfig.AllowOrigins,
+		AllowMethods:     corsConfig.AllowMethods,
+		AllowHeaders:     corsConfig.AllowHeaders,
+		ExposeHeaders:    corsConfig.ExposeHeaders,
+		AllowCredentials: corsConfig.AllowCredentials,
+	}))
+}

@@ -8,28 +8,31 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// InitializeKernel sets up the Gin engine with middleware and routes
+// InitializeKernel sets up the Gin engine
 func InitializeKernel() *gin.Engine {
-	// Load application configuration
+	// Load configuration
 	cfg := config.LoadConfig()
 
-	// Set Gin mode
+	// Set mode
 	if cfg.Mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	} else {
 		gin.SetMode(gin.DebugMode)
 	}
 
-	// Initialize the Gin engine
+	// Initialize the engine
 	engine := gin.Default()
 
-	// Middleware
+	// Setup CORS
+	SetupCORS(engine)
+
+	// Load middleware
 	logger := middleware.LoggerMiddleware{}
 	engine.Use(func(c *gin.Context) {
 		logger.Handle(func(ctx context.Context) {})(context.WrapGinContext(c))
 	})
 
-	// Routes
+	// Register routes
 	RegisterRoutes(engine)
 
 	return engine

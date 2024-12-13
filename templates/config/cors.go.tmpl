@@ -1,0 +1,21 @@
+package config
+
+// CORSConfig holds the CORS configuration
+type CORSConfig struct {
+	AllowOrigins     []string
+	AllowMethods     []string
+	AllowHeaders     []string
+	ExposeHeaders    []string
+	AllowCredentials bool
+}
+
+// LoadCORSConfig returns the CORS configuration
+func LoadCORSConfig() *CORSConfig {
+	return &CORSConfig{
+		AllowOrigins:     []string{"*"}, // Update as needed
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Content-Type", "Authorization"},
+		ExposeHeaders:    []string{},
+		AllowCredentials: false,
+	}
+}
