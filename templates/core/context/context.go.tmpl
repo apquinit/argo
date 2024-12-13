@@ -1,9 +1,37 @@
 package context
 
+import "github.com/gin-gonic/gin"
+
 // Context defines methods for handling HTTP requests and responses
 type Context interface {
 	JSON(code int, obj interface{})
 	Param(key string) string
 	Query(key string) string
 	BindJSON(obj interface{}) error
+}
+
+// GinContext wraps gin.Context and implements the Context interface
+type GinContext struct {
+	Ctx *gin.Context
+}
+
+func (g *GinContext) JSON(code int, obj interface{}) {
+	g.Ctx.JSON(code, obj)
+}
+
+func (g *GinContext) Param(key string) string {
+	return g.Ctx.Param(key)
+}
+
+func (g *GinContext) Query(key string) string {
+	return g.Ctx.Query(key)
+}
+
+func (g *GinContext) BindJSON(obj interface{}) error {
+	return g.Ctx.BindJSON(obj)
+}
+
+// WrapGinContext converts gin.Context to context.Context
+func WrapGinContext(c *gin.Context) Context {
+	return &GinContext{Ctx: c}
 }

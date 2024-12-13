@@ -36,7 +36,6 @@ func CreateNewProject(projectName string) error {
 		"app/middleware/logger.go":        "../templates/app/middleware/logger.go.tmpl",
 		"config/app.go":                   "../templates/config/app.go.tmpl",
 		"core/context/context.go":         "../templates/core/context/context.go.tmpl",
-		"core/context/gincontext.go":      "../templates/core/context/gincontext.go.tmpl",
 		"env/env.go":                      "../templates/env/env.go.tmpl",
 		"start/kernel.go":                 "../templates/start/kernel.go.tmpl",
 		"start/routes.go":                 "../templates/start/routes.go.tmpl",
