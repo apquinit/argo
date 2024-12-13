@@ -28,14 +28,14 @@ func CreateNewProject(projectName string) error {
 	}
 
 	files := map[string]string{
-		"app/controllers/health.go": "../templates/controllers/health.go.tmpl",
-		"start/env.go":              "../templates/env.go.tmpl",
-		"start/kernel.go":           "../templates/kernel.go.tmpl",
-		"start/routes.go":           "../templates/routes.go.tmpl",
-		".env":                      "../templates/env.example.tmpl",
-		".env.example":              "../templates/env.example.tmpl",
-		".gitignore":                "../templates/gitignore.tmpl",
-		"argo.go":                   "../templates/argo.go.tmpl",
+		"app/controllers/health.go":       "../templates/controllers/health.go.tmpl",
+		"start/env.go":                    "../templates/env.go.tmpl",
+		"start/kernel.go":                 "../templates/kernel.go.tmpl",
+		"start/routes.go":                 "../templates/routes.go.tmpl",
+		".env":                            "../templates/env.example.tmpl",
+		".env.example":                    "../templates/env.example.tmpl",
+		".gitignore":                      "../templates/gitignore.tmpl",
+		fmt.Sprintf("%s.go", projectName): "../templates/project.go.tmpl",
 	}
 
 	// Check if project directory already exists
@@ -67,7 +67,6 @@ func CreateNewProject(projectName string) error {
 		}
 
 		targetPath := filepath.Join(projectName, target)
-		fmt.Printf("Creating file: %s\n", targetPath)
 		err := createFileFromTemplate(targetPath, tmplPath, projectName)
 		if err != nil {
 			return fmt.Errorf("error creating file %s: %v", target, err)
@@ -133,11 +132,13 @@ func createFileFromTemplate(targetPath, tmplPath, projectName string) error {
 }
 
 func loadDependenciesYAML(filePath string) ([]string, error) {
+	// Read YAML file
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("error reading YAML file: %v", err)
 	}
 
+	// Unmarshal YAML data
 	var config Config
 	if err := yaml.Unmarshal(data, &config); err != nil {
 		return nil, fmt.Errorf("error parsing YAML file: %v", err)
