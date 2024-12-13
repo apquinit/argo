@@ -29,16 +29,16 @@ func CreateNewProject(projectName string) error {
 	}
 
 	files := map[string]string{
-		"app/controllers/health.go":       "../templates/app/controllers/health.go.tmpl",
-		"app/middleware/logger.go":        "../templates/app/middleware/logger.go.tmpl",
-		"config/app.go":                   "../templates/config/app.go.tmpl",
-		"start/env.go":                    "../templates/start/env.go.tmpl",
-		"start/kernel.go":                 "../templates/start/kernel.go.tmpl",
-		"start/routes.go":                 "../templates/start/routes.go.tmpl",
-		".env":                            "../templates/env.example.tmpl",
-		".env.example":                    "../templates/env.example.tmpl",
-		".gitignore":                      "../templates/gitignore.tmpl",
-		fmt.Sprintf("%s.go", projectName): "../templates/server.go.tmpl",
+		"app/controllers/health.go": "../templates/app/controllers/health.go.tmpl",
+		"app/middleware/logger.go":  "../templates/app/middleware/logger.go.tmpl",
+		"config/app.go":             "../templates/config/app.go.tmpl",
+		"start/env.go":              "../templates/start/env.go.tmpl",
+		"start/kernel.go":           "../templates/start/kernel.go.tmpl",
+		"start/routes.go":           "../templates/start/routes.go.tmpl",
+		".env":                      "../templates/env.example.tmpl",
+		".env.example":              "../templates/env.example.tmpl",
+		".gitignore":                "../templates/gitignore.tmpl",
+		"server.go":                 "../templates/server.go.tmpl",
 	}
 
 	// Check if project directory already exists
