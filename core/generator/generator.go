@@ -66,11 +66,23 @@ func CreateNewProject(projectName string) error {
 		}
 
 		targetPath := filepath.Join(projectName, target)
-		fmt.Printf("Creating file: %s from template: %s\n", targetPath, tmplPath)
+		fmt.Printf("Creating file: %s\n", targetPath)
 		err := createFileFromTemplate(targetPath, tmplPath, projectName)
 		if err != nil {
 			return fmt.Errorf("error creating file %s: %v", target, err)
 		}
+	}
+
+	// Initialize Go module
+	fmt.Println("Initializing Go module...")
+	if err := runCommand("go", projectName, "mod", "init", projectName); err != nil {
+		return fmt.Errorf("error initializing Go module: %v", err)
+	}
+
+	// Run go mod tidy
+	fmt.Println("Tidying up Go module...")
+	if err := runCommand("go", projectName, "mod", "tidy"); err != nil {
+		return fmt.Errorf("error running go mod tidy: %v", err)
 	}
 
 	// Load dependencies from YAML
@@ -86,7 +98,6 @@ func CreateNewProject(projectName string) error {
 		}
 	}
 
-	fmt.Printf("Project %s created successfully!\n", projectName)
 	return nil
 }
 
