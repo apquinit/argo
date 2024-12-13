@@ -91,6 +91,37 @@ cd myproject
 ./argo serve
 ```
 
+## Local Setup
+
+### Prerequisites
+
+- Go 1.22.3 or later installed on your machine
+- Make installed on your machine
+
+### Building the Binaries
+
+To build the binaries, you can use the provided `Makefile`. This will compile the `argo-cli` and `create-argo-app` binaries.
+
+```bash
+# Build the project
+make
+```
+
+This command will:
+1. Build the `argo-cli` binary and place it in the `create-argo-app` directory.
+2. Embed the `argo-cli` binary, templates, and `dependencies.yaml` into the `create-argo-app` binary.
+
+### Cleaning Up
+
+To clean up the generated binaries, you can use the `clean` target in the `Makefile`.
+
+```bash
+# Clean up binaries
+make clean
+```
+
+This command will remove the `argo-cli` and `create-argo-app` binaries.
+
 ## Roadmap
 
 ### Planned Features
