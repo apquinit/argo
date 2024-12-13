@@ -20,7 +20,7 @@ build-create-argo-app: build-argo-cli
 # Clean up binaries
 clean:
 	@echo "Cleaning up binaries..."
-	@rm -f ./create-argo-app/build/$(CREATE_ARGO_APP_BINARY)
+	@rm -f ./create-argo-app/release/$(CREATE_ARGO_APP_BINARY)
 
 # Default target
 all: build-create-argo-app
