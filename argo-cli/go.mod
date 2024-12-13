@@ -1,4 +1,4 @@
-module argo
+module argo-cli
 
 go 1.22.3
 

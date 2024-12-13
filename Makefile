@@ -3,7 +3,7 @@ ARGO_BINARY=argo
 CREATE_ARGO_APP_BINARY=create-argo-app
 
 # Define the source paths
-ARGO_SOURCE=cli/argo.go
+ARGO_SOURCE=argo-cli/main.go
 CREATE_ARGO_APP_SOURCE=create-argo-app.go
 
 # Build the argo binary
