@@ -1,4 +1,4 @@
-package generator
+package main
 
 import (
 	"fmt"
@@ -7,19 +7,73 @@ import (
 	"path/filepath"
 	"text/template"
 
+	"github.com/urfave/cli/v2"
 	"gopkg.in/yaml.v2"
 )
+
+const version = "1.0.0"
 
 type Config struct {
 	Dependencies []string `yaml:"dependencies"`
 }
 
-func CreateNewProject(projectName string) error {
-	// Validate project name
-	if projectName == "" {
-		return fmt.Errorf("project name cannot be empty")
+func main() {
+	app := &cli.App{
+		Name:    "argo",
+		Usage:   "a powerful, opinionated web framework for Go",
+		Version: version,
+		Commands: []*cli.Command{
+			{
+				Name:  "version",
+				Usage: "Display the CLI version",
+				Action: func(c *cli.Context) error {
+					fmt.Printf("Argo CLI version %s\n", version)
+					return nil
+				},
+			},
+			{
+				Name:  "new",
+				Usage: "Create a new project",
+				Flags: []cli.Flag{
+					&cli.BoolFlag{
+						Name:  "verbose",
+						Usage: "Enable verbose output",
+					},
+				},
+				Action: func(c *cli.Context) error {
+					if c.NArg() < 1 {
+						return fmt.Errorf("project name is required")
+					}
+					projectName := c.Args().Get(0)
+					verbose := c.Bool("verbose")
+
+					if verbose {
+						fmt.Printf("Verbose mode enabled. Creating project: %s\n", projectName)
+					}
+
+					if _, err := os.Stat(projectName); !os.IsNotExist(err) {
+						return fmt.Errorf("directory '%s' already exists", projectName)
+					}
+
+					if err := createNewProject(projectName); err != nil {
+						return fmt.Errorf("error creating project: %v", err)
+					}
+
+					fmt.Printf("Project '%s' created successfully.\n", projectName)
+					return nil
+				},
+			},
+		},
 	}
 
+	err := app.Run(os.Args)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+}
+
+func createNewProject(projectName string) error {
 	// Define directories and files to create
 	directories := []string{
 		"app/controllers",
@@ -29,21 +83,16 @@ func CreateNewProject(projectName string) error {
 	}
 
 	files := map[string]string{
-		"app/controllers/health.go": "../templates/app/controllers/health.go.tmpl",
-		"app/middleware/logger.go":  "../templates/app/middleware/logger.go.tmpl",
-		"config/app.go":             "../templates/config/app.go.tmpl",
-		"start/env.go":              "../templates/start/env.go.tmpl",
-		"start/kernel.go":           "../templates/start/kernel.go.tmpl",
-		"start/routes.go":           "../templates/start/routes.go.tmpl",
-		".env":                      "../templates/env.example.tmpl",
-		".env.example":              "../templates/env.example.tmpl",
-		".gitignore":                "../templates/gitignore.tmpl",
-		"server.go":                 "../templates/server.go.tmpl",
-	}
-
-	// Check if project directory already exists
-	if _, err := os.Stat(projectName); !os.IsNotExist(err) {
-		return fmt.Errorf("project directory %s already exists", projectName)
+		"app/controllers/health.go": "templates/app/controllers/health.go.tmpl",
+		"app/middleware/logger.go":  "templates/app/middleware/logger.go.tmpl",
+		"config/app.go":             "templates/config/app.go.tmpl",
+		"start/env.go":              "templates/start/env.go.tmpl",
+		"start/kernel.go":           "templates/start/kernel.go.tmpl",
+		"start/routes.go":           "templates/start/routes.go.tmpl",
+		".env":                      "templates/env.example.tmpl",
+		".env.example":              "templates/env.example.tmpl",
+		".gitignore":                "templates/gitignore.tmpl",
+		"server.go":                 "templates/server.go.tmpl",
 	}
 
 	// Create project directory
@@ -105,29 +154,24 @@ func CreateNewProject(projectName string) error {
 }
 
 func createFileFromTemplate(targetPath, tmplPath, projectName string) error {
-	// Parse template file
 	tmpl, err := template.ParseFiles(tmplPath)
 	if err != nil {
 		return fmt.Errorf("error parsing template: %w", err)
 	}
 
-	// Create target file
 	file, err := os.Create(targetPath)
 	if err != nil {
 		return fmt.Errorf("error creating file: %w", err)
 	}
 	defer file.Close()
 
-	// Populate template data
 	data := struct {
 		ProjectName string
 	}{
 		ProjectName: projectName,
 	}
 
-	// Execute template
-	err = tmpl.Execute(file, data)
-	if err != nil {
+	if err := tmpl.Execute(file, data); err != nil {
 		return fmt.Errorf("error executing template: %w", err)
 	}
 
@@ -135,13 +179,11 @@ func createFileFromTemplate(targetPath, tmplPath, projectName string) error {
 }
 
 func loadDependenciesYAML(filePath string) ([]string, error) {
-	// Read YAML file
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("error reading YAML file: %v", err)
 	}
 
-	// Unmarshal YAML data
 	var config Config
 	if err := yaml.Unmarshal(data, &config); err != nil {
 		return nil, fmt.Errorf("error parsing YAML file: %v", err)
@@ -151,16 +193,9 @@ func loadDependenciesYAML(filePath string) ([]string, error) {
 }
 
 func runCommand(command, dir string, args ...string) error {
-	// Create the command with arguments
 	cmd := exec.Command(command, args...)
-
-	// Set the working directory for the command
 	cmd.Dir = dir
-
-	// Redirect command output to the standard output and error streams
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
-
-	// Run the command
 	return cmd.Run()
 }
