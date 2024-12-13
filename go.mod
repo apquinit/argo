@@ -1,4 +1,4 @@
-module create-argo-app
+module github.com/ardata-tech/create-argo-app
 
 go 1.22.3
 
