@@ -12,7 +12,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-//go:embed templates/* dependencies.yaml
+//go:embed templates/* dependencies.yaml argo
 var embeddedFiles embed.FS
 
 const version = "1.0.0"
@@ -160,7 +160,7 @@ func createNewProject(projectName string) error {
 
 func copyEmbeddedBinary(projectName string) error {
 	// Read the embedded binary
-	binaryData, err := embeddedFiles.ReadFile("argo/argo")
+	binaryData, err := embeddedFiles.ReadFile("build/argo")
 	if err != nil {
 		return fmt.Errorf("error reading embedded binary: %v", err)
 	}
