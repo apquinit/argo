@@ -1,17 +1,17 @@
 package main
 
 import (
-    "log"
+	"log"
 
-    "{{.ProjectName}}/start"
+	"{{.ProjectName}}/start"
 )
 
 func main() {
-    // Initialize the server
-    server := start.InitializeKernel()
+	// Initialize the server
+	server := start.InitializeKernel()
 
-    // Start the server
-    if err := server.Run(); err != nil {
-        log.Fatalf("error starting server: %v", err)
-    }
+	// Start the server
+	if err := server.Run(); err != nil {
+		log.Fatalf("error starting server: %v", err)
+	}
 }

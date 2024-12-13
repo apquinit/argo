@@ -1,0 +1,9 @@
+package context
+
+// Context defines methods for handling HTTP requests and responses
+type Context interface {
+	JSON(code int, obj interface{})
+	Param(key string) string
+	Query(key string) string
+	BindJSON(obj interface{}) error
+}

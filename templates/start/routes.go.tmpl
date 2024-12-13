@@ -1,15 +1,19 @@
 package start
 
 import (
-	"github.com/gin-gonic/gin"
 	"{{.ProjectName}}/app/controllers"
+	"{{.ProjectName}}/core/context"
+
+	"github.com/gin-gonic/gin"
 )
 
 // RegisterRoutes sets up the application's routes
 func RegisterRoutes(engine *gin.Engine) {
-	routes := engine.Group("/")
-	{
-		routes.GET("/", controllers.Handle)
-		// Add more routes here
-	}
+	// Initialize controllers
+	healthController := controllers.HealthController{}
+
+	// Health check endpoint
+	engine.GET("/health", func(c *gin.Context) {
+		healthController.Handle(context.WrapGinContext(c))
+	})
 }
