@@ -62,14 +62,14 @@ Argo provides utilities to simplify writing unit tests, integration tests, and e
 
 ```bash
 # Install the CLI tool
-go install github.com/ardata-tech/argo@latest
+go install github.com/ardata-tech/create-argo-app@latest
 ```
 
 ### Create a New Project
 
 ```bash
 # Scaffold a new project
-argo new myproject
+create-argo-app new myproject
 
 # Navigate to the project directory
 cd myproject
