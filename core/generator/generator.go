@@ -7,7 +7,7 @@ import (
 	"text/template"
 )
 
-func CreateNewProject(projectName string) {
+func CreateNewProject(projectName string) error {
 	directories := []string{
 		"app/controllers",
 		"start",
@@ -27,8 +27,7 @@ func CreateNewProject(projectName string) {
 	fmt.Printf("Creating project: %s\n", projectName)
 	err := os.Mkdir(projectName, 0755)
 	if err != nil {
-		fmt.Printf("Error creating project: %v\n", err)
-		return
+		return fmt.Errorf("error creating project: %v", err)
 	}
 
 	// Create subdirectories
@@ -36,7 +35,7 @@ func CreateNewProject(projectName string) {
 		path := filepath.Join(projectName, dir)
 		err := os.MkdirAll(path, 0755)
 		if err != nil {
-			fmt.Printf("Error creating directory %s: %v\n", dir, err)
+			return fmt.Errorf("error creating directory %s: %v", dir, err)
 		}
 	}
 
@@ -45,11 +44,12 @@ func CreateNewProject(projectName string) {
 		targetPath := filepath.Join(projectName, target)
 		err := createFileFromTemplate(targetPath, tmplPath, projectName)
 		if err != nil {
-			fmt.Printf("Error creating file %s: %v\n", target, err)
+			return fmt.Errorf("error creating file %s: %v", target, err)
 		}
 	}
 
 	fmt.Printf("Project %s created successfully!\n", projectName)
+	return nil
 }
 
 func createFileFromTemplate(targetPath, tmplPath, projectName string) error {
