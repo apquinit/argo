@@ -4,11 +4,11 @@ Argo is a modern, powerful, and opinionated web framework for Go, designed to st
 
 ## Why the Name "Argo"? ⛵
 
-1. AR + Go
+### 1. **AR + Go**
 
 The name combines "AR" (AR Data Tech) with "Go", the language it’s built on. This reflects both its foundation and its purpose: a clean, efficient framework built on Go's strengths to help developers build better applications.
 
-2. The Legendary Ship
+### 2. **The Legendary Ship**
 
 In Greek mythology, Argo was the ship that carried Jason and his crew on an epic journey to find the Golden Fleece. Just like the ship, this framework is designed to help developers navigate the challenges of web development and deliver something great.
 
