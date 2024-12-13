@@ -1,12 +1,21 @@
 package start
 
 import (
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"{{.ProjectName}}/app/controllers"
 )
 
 // RegisterRoutes sets up the application's routes
 func RegisterRoutes(engine *gin.Engine) {
+	// Define root route
+	engine.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Welcome to {{.ProjectName}}!",
+		})
+	})
+
 	// Define API routes
 	api := engine.Group("/api")
 	{
