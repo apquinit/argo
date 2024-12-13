@@ -1,0 +1,31 @@
+package main
+
+import (
+	"fmt"
+	"log"
+	"os"
+
+	"{{.ProjectName}}/start"
+)
+
+func main() {
+	// Load environment variables
+	if err := start.LoadEnv(); err != nil {
+		log.Fatalf("Error loading environment variables: %v", err)
+	}
+
+	// Initialize the Gin engine
+	engine := start.InitializeKernel()
+
+	// Get the server port from the environment or default to 8080
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+
+	// Start the server
+	fmt.Printf("Starting server on port %s...\n", port)
+	if err := engine.Run(":" + port); err != nil {
+		log.Fatalf("Server failed to start: %v", err)
+	}
+}

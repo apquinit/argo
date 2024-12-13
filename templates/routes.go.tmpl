@@ -1,0 +1,16 @@
+package start
+
+import (
+	"github.com/gin-gonic/gin"
+	"{{.ProjectName}}/app/controllers"
+)
+
+// RegisterRoutes sets up the application's routes
+func RegisterRoutes(engine *gin.Engine) {
+	// Define API routes
+	api := engine.Group("/api")
+	{
+		api.GET("/health", controllers.HealthCheck)
+		// Add more routes here
+	}
+}
