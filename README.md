@@ -1,52 +1,189 @@
-# Argo
-Argo is a powerful, opinionated web framework for Go, designed to make modern web development simpler, faster, and more organized. Inspired by the principles of efficiency and scalability, Argo offers a developer-friendly command-line interface and built-in tools to help teams deliver exceptional software with ease.
+# Argo: The Powerful, Opinionated Web Framework for Go
 
-## Features
-1. Effortless Project Initialization:
-Quickly scaffold new projects with Argo's intuitive CLI. Get started with a pre-configured structure that adheres to best practices for maintainability and scalability.
+Argo is a modern, powerful, and opinionated web framework for Go, designed to streamline the development of scalable and maintainable server applications. Inspired by the principles of efficiency, organization, and developer happiness, Argo offers a suite of features and tools that make it easier for teams to deliver exceptional software with ease.
 
-2. Database Migrations and Seeders:
-Manage database schema evolution and seed your data effortlessly with built-in migration and seeding commands. Migrations follow a clear up-and-down structure, making changes easy to track and revert.
+## Core Features
 
-3. Code Generation Tools:
-Generate boilerplate code for controllers, models, routes, and more. Argo automates repetitive tasks so you can focus on building the core features of your application.
+### 1. **Developer-Friendly CLI**
 
-4. Routing Made Simple:
-Define routes cleanly and intuitively, with support for RESTful patterns and middleware integration.
+Argo's command-line interface (CLI) is at the heart of the framework, providing intuitive commands to help developers generate and manage projects. The CLI supports:
 
-5. Built for Performance and Scalability:
-Leveraging Go's inherent speed and concurrency, Argo is optimized for building high-performance web applications that scale effortlessly.
+- **Project scaffolding**: Quickly generate new server applications with pre-configured settings.
+- **Boilerplate generation**: Easily create controllers, models, migrations, and seeders.
+- **Environment management**: Built-in support for environment-specific configurations.
 
-6. Extensible Design:
-Extend Argo's capabilities with plugins or integrate third-party libraries seamlessly, ensuring the framework grows with your needs.
+### 2. **Built-In Database Management**
 
-## Example Workflow with Argo:
+Argo simplifies database management with:
 
-1. Initialize a New Project:
+- **Models**: Define database models with struct tags for easy mapping.
+- **Migrations**: Automatically generate and manage database schema changes.
+- **Seeders**: Populate the database with initial or testing data.
+
+### 3. **Modular Architecture**
+
+Argo enforces a modular structure to keep projects organized and maintainable.
+
+### 4. **Built-In Routing**
+
+With support for route groups, middleware, and named routes, Argo makes defining and managing application routes straightforward.
+
+### 5. **Middleware Support**
+
+Easily integrate middleware for features like authentication, logging, or request validation. Argo provides default middleware but allows custom implementation for specific needs.
+
+### 6. **Efficient ORM**
+
+Argo integrates with GORM, providing a powerful and intuitive ORM for interacting with databases.
+
+### 7. **Dependency Injection**
+
+Built-in support for dependency injection (DI) makes it easier to manage application components and services.
+
+### 8. **Testing Utilities**
+
+Argo provides utilities to simplify writing unit tests, integration tests, and end-to-end tests.
+
+## Getting Started
+
+### Install Argo
+
 ```bash
-argo new my-project
+# Install the CLI tool
+go install github.com/ardata-tech/argo@latest
 ```
-This sets up a structured project with pre-configured folders and files.
 
-2. Generate a Controller:
+### Create a New Project
+
 ```bash
-argo make:controller UserController
+# Scaffold a new project
+argo new myproject
+
+# Navigate to the project directory
+cd myproject
 ```
 
-3. Run Database Migrations:
+### Generate Resources
+
 ```bash
-argo migration:run
+# Generate a new controller
+argo make:controller user
+
+# Generate a new model
+argo make:model user
+
+# Generate a new migration
+argo make:migration users
+
+# Generate a new seeder
+argo make:seeder user
 ```
 
-4. Seed the Database:
-```bash
-argo db:seed
-```
+### Run the Application
 
-5. Run the Development Server:
 ```bash
+# Start the development server
 argo serve
 ```
 
-## Why Choose Argo?
-Argo is designed for developers who value simplicity without sacrificing power. It provides the tools needed to build robust web applications while promoting clean and consistent codebases. Whether you’re working on a small MVP or a large-scale production app, Argo helps you ship faster and more reliably.
+## Example: User Management Module
+
+### Define a Model
+
+File: `models/user.go`
+
+```go
+package models
+
+type User struct {
+    ID        uint   `gorm:"primaryKey"`
+    Name      string `gorm:"size:255"`
+    Email     string `gorm:"unique;size:255"`
+    CreatedAt time.Time
+    UpdatedAt time.Time
+}
+```
+
+### Create a Migration
+
+File: `migrations/users.go`
+
+```go
+package migrations
+
+import "gorm.io/gorm"
+
+func Up(db *gorm.DB) error {
+    return db.AutoMigrate(&models.User{})
+}
+
+func Down(db *gorm.DB) error {
+    return db.Migrator().DropTable("users")
+}
+```
+
+### Implement a Controller
+
+File: `controllers/user.go`
+
+```go
+package controllers
+
+import (
+    "net/http"
+    "github.com/labstack/echo/v4"
+    "myproject/models"
+    "gorm.io/gorm"
+)
+
+func GetUsers(c echo.Context) error {
+    var users []models.User
+    if err := models.DB.Find(&users).Error; err != nil {
+        return c.JSON(http.StatusInternalServerError, map[string]string{"error": err.Error()})
+    }
+    return c.JSON(http.StatusOK, users)
+}
+```
+
+### Add a Route
+
+File: `routes/web.go`
+
+```go
+package routes
+
+import (
+    "github.com/labstack/echo/v4"
+    "myproject/controllers"
+)
+
+func RegisterRoutes(e *echo.Echo) {
+    e.GET("/users", controllers.GetUsers)
+}
+```
+
+### Run the Application
+
+```bash
+# Start the development server
+argo serve
+```
+
+## Roadmap
+
+### Planned Features
+
+- **Plugin System**: Extend the functionality of Argo with custom plugins.
+- **REST and GraphQL API Support**: Built-in tools for API development.
+- **WebSocket Integration**: Easy setup for real-time features.
+- **Code Generators**: Advanced generators for common patterns like services and repositories.
+- **Performance Monitoring**: Built-in support for monitoring and profiling applications.
+
+### Community and Contributions
+
+Contributions are welcome! Join the community on GitHub to suggest features, report bugs, and collaborate on improving Argo..
+
+---
+
+With Argo, server development in Go has never been this efficient. Start building your next project today and experience the power of simplicity and scalability.
+
